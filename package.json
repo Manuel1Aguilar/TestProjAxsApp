@@ -1,6 +1,6 @@
 {
   "name": "axieapp",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Axie app",
   "main": "index.js",
   "type" : "module",

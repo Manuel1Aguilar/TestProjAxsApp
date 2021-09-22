@@ -10,7 +10,10 @@ const matchHistory = new MatchHistory();
 
 app.use(bodyParser.json());
 
-
+//Add persist layer
+//Calculate dmgs
+//Use matches data
+//Maybe get W/D/L
 app.get('/total-matches', (req, res) => {
     res.json(matchHistory.calcTotalMatches());
 });
