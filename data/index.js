@@ -30,6 +30,10 @@ class Data{
     }
     //init sqlite debugger
     initializeDatabase(){
+
+        // This should go, want to add migrations
+
+        
         // if !exists = create
         // this.db.serialize(() => {
         //     if(! this.exists) {
