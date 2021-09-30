@@ -33,14 +33,14 @@ class Data{
 
         // This should go, want to add migrations
 
-        
+
         // if !exists = create
         // this.db.serialize(() => {
         //     if(! this.exists) {
         //         this.db.run(
         //             "CREATE TABLE Matches (id INTEGER PRIMARY KEY AUTOINCREMENT, result INTEGER, date DATETIME, slpGain INTEGER)"
         //         );
-        //         console.log("Created Matches table");
+        //         console.log("Created Matches table"); 
         //         this.db.run(
         //             "CREATE TABLE Users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, slpAmount INTEGER, cups INTEGER)"
         //         );
