@@ -1,10 +1,9 @@
 'use strict';
-import
+const {
   Model
-from " sequelize";
-
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class Match extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -14,20 +13,20 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
-  User.init({
-    name: DataTypes.STRING,
+  Match.init({
     slp: DataTypes.INTEGER,
-    cups: DataTypes.INTEGER
+    cups: DataTypes.INTEGER,
+    result: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'User',
+    modelName: 'Match',
   });
-  User.associate = function(models) {
-    // associations can be defined here
-    User.hasMany(models.Match, {
+  Match.associate = function(models) {
+    Match.belongsTo(models.User, {
       foreignKey: 'userId',
+      onDelete:'CASCADE'
     })
   };
-
-  return User;
+  return Match;
 };
