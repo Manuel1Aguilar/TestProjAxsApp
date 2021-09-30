@@ -51,13 +51,6 @@ app.get('/total-matches', (req, res) => {
     res.json(matchHistory.calcTotalMatches());
 });
 
-app.get('/test-conn', (req, res) => {
-
-    console.log('Testing  connection');
-    data.testConnection();
-    res.json('end');
-});
-
 app.post('/create-user', (req, res) => {
     const { slpAmount, cupsAmount, name } = req.body;
     const users = [];
