@@ -51,42 +51,104 @@ app.get('/total-matches', (req, res) => {
     res.json(matchHistory.calcTotalMatches());
 });
 
+/** 
+ * @swagger 
+ * /create-user: 
+ *   post: 
+ *     description: Create user 
+ *     parameters: 
+ *     - name: User 
+ *       description: User to create 
+ *       in: body 
+ *       schema:
+*          type: object
+*          required:
+*            - name
+*            - slpAmount
+*            - cupsAmount
+*          properties:
+*            name:
+*              type: string
+*            slpAmount:
+*              type: integer
+*            cupsAmount:
+*              type: integer
+ *     responses:  
+ *       201: 
+ *         description: Created  
+ */  
 app.post('/create-user', (req, res) => {
     const { slpAmount, cupsAmount, name } = req.body;
-    const users = [];
-    data.db.serialize(() =>{
-        data.db.run(`INSERT INTO Users (name, slpAmount, cups) VALUES ('${name}', ${slpAmount}, ${cupsAmount})`);
-        data.db.each("SELECT * from Users", (err, row) =>{
-            if(err){
-                console.error(err.message);
-            }
-            if(row){
-                console.log(row);
-                users.push(`User:${row}`)
-            }
-        });
-    });
-    
-    console.log(`Users: ${  users}`);
-    res.json(users);
+    console.log(slpAmount);
+    console.log(cupsAmount);
+    console.log(name);
+    res.json(req.body);
 });
-
+/** 
+ * @swagger
+ * /add-win: 
+ *   post: 
+ *     description: Adds a win
+ *     parameters: 
+ *     - name: SLP 
+ *       description: SLP won on this match 
+ *       in: body 
+ *       schema:
+*          type: object
+*          required:
+*            - slpAmount
+*          properties:
+*            slpAmount:
+*              type: integer
+ *     responses:  
+ *       201: 
+ *         description: Created  
+*/
 app.post('/add-win', (req, res) => {
     const { slpAmount } = req.body;
+    console.log(slpAmount)
     matchHistory.addWin(slpAmount);
+    console.log(slpAmount)
     res.json(matchHistory.wins);
 });
-
+/** 
+ * @swagger
+ * /add-draw: 
+ *   post: 
+ *     description: Adds a draw to match history
+ *     parameters: 
+ *     - name: SLP 
+ *       description: SLP won on this match 
+ *       in: body 
+ *       schema:
+*          type: object
+*          required:
+*            - slpAmount
+*          properties:
+*            slpAmount:
+*              type: integer
+ *     responses:  
+ *       201: 
+ *         description: Created  
+*/
 app.post('/add-draw', (req, res) => {
     const { slpAmount } = req.body;
     matchHistory.addDraw(slpAmount);
     res.json(matchHistory.draws);
 });
-
+/** 
+ * @swagger
+ * /add-loss:
+ *  post:
+ *    description: Adds loss to match history
+ *    responses: 
+ *      '200': 
+ *        description: Created
+*/
 app.post('/add-loss', (req, res) => {
     matchHistory.addLoss();
     res.json(matchHistory.losses);
-});
+}); 
 
 app.listen(HTTP_PORT, () => {
     console.log(`Listening on port ${HTTP_PORT}`);
