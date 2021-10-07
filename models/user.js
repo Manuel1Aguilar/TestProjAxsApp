@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     name: DataTypes.STRING,
     slp: DataTypes.INTEGER,
-    cups: DataTypes.INTEGER
+    cups: DataTypes.INTEGER,
+    isDefault: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'User',
