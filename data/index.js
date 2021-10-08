@@ -1,6 +1,6 @@
-import fs from 'fs';
-import sqlite3 from 'sqlite3';
-import Sequelize from 'sequelize';
+const fs = require('fs');
+const sqlite3 = require('sqlite3');
+const Sequelize = require('sequelize');
 sqlite3.verbose();
 
 //Add persist layer
@@ -56,6 +56,6 @@ class Data{
     }
 }
 
-export default Data;
+module.exports = Data;
 
 

@@ -1,9 +1,10 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import MatchHistory from '../match-history/index.js';
-import Data from '../data/index.js';
-import swaggerJsDoc from "swagger-jsdoc";
-import swaggerUi from "swagger-ui-express";
+const express = require('express');
+const bodyParser = require('body-parser');
+// import MatchHistory from '../logic/matchHistory.js';
+const UserLogic = require('../logic/userLogic.js');
+const Data = require('../data/index.js');
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 
 
 const HTTP_PORT = process.env.HTTP_PORT || 3001;
@@ -23,8 +24,9 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 const app = express();
 app.use(bodyParser.urlencoded(({extended: true})));
 
-const matchHistory = new MatchHistory();
+// const matchHistory = new MatchHistory();
 const data = new Data();
+const userLogic = new UserLogic();
 
 app.use(bodyParser.json());
 
@@ -48,7 +50,7 @@ app.use(
  *        description: A succesful response
 */
 app.get('/total-matches', (req, res) => {
-    res.json(matchHistory.calcTotalMatches());
+    // res.json(matchHistory.calcTotalMatches());
 });
 
 /** 
@@ -73,16 +75,19 @@ app.get('/total-matches', (req, res) => {
 *              type: integer
 *            cupsAmount:
 *              type: integer
+*            isDefault:
+*              type: boolean
  *     responses:  
  *       201: 
  *         description: Created  
  */  
 app.post('/create-user', (req, res) => {
-    const { slpAmount, cupsAmount, name } = req.body;
-    console.log(slpAmount);
-    console.log(cupsAmount);
-    console.log(name);
-    res.json(req.body);
+    const { slpAmount, cupsAmount, name, isDefault } = req.body;
+    userLogic.createUser(name, slpAmount, cupsAmount, isDefault);
+    userLogic.getUsers().then((users) =>{
+        console.log(`Users: ${users}`);
+        res.json(users);
+    });
 });
 /** 
  * @swagger
@@ -107,9 +112,9 @@ app.post('/create-user', (req, res) => {
 app.post('/add-win', (req, res) => {
     const { slpAmount } = req.body;
     console.log(slpAmount)
-    matchHistory.addWin(slpAmount);
+    // matchHistory.addWin(slpAmount);
     console.log(slpAmount)
-    res.json(matchHistory.wins);
+    // res.json(matchHistory.wins);
 });
 /** 
  * @swagger
@@ -133,8 +138,8 @@ app.post('/add-win', (req, res) => {
 */
 app.post('/add-draw', (req, res) => {
     const { slpAmount } = req.body;
-    matchHistory.addDraw(slpAmount);
-    res.json(matchHistory.draws);
+    // matchHistory.addDraw(slpAmount);
+    // res.json(matchHistory.draws);
 });
 /** 
  * @swagger
@@ -146,7 +151,7 @@ app.post('/add-draw', (req, res) => {
  *        description: Created
 */
 app.post('/add-loss', (req, res) => {
-    matchHistory.addLoss();
+    // matchHistory.addLoss();
     res.json(matchHistory.losses);
 }); 
 
