@@ -55,12 +55,12 @@ app.get('/total-matches', (req, res) => {
 
 /** 
  * @swagger 
- * /create-user: 
- *   post: 
- *     description: Create user 
+ * /user: 
+ *   put: 
+ *     description: Create or update user 
  *     parameters: 
  *     - name: User 
- *       description: User to create 
+ *       description: User to create or update
  *       in: body 
  *       schema:
 *          type: object
@@ -68,7 +68,10 @@ app.get('/total-matches', (req, res) => {
 *            - name
 *            - slpAmount
 *            - cupsAmount
+*            - isDefault
 *          properties:
+*            id:
+*              type: integer
 *            name:
 *              type: string
 *            slpAmount:
@@ -81,14 +84,64 @@ app.get('/total-matches', (req, res) => {
  *       201: 
  *         description: Created  
  */  
-app.post('/create-user', (req, res) => {
-    const { slpAmount, cupsAmount, name, isDefault } = req.body;
-    userLogic.createUser(name, slpAmount, cupsAmount, isDefault);
-    userLogic.getUsers().then((users) =>{
-        console.log(`Users: ${users}`);
+app.put('/user', async (req, res) => {
+    const { id, slpAmount, cupsAmount, name, isDefault } = req.body;
+    const val = userLogic.save(id, name, slpAmount, cupsAmount, isDefault).then((user) =>{
+        res.json(user);
+    });
+});
+
+/** 
+ * @swagger 
+ * /user: 
+ *   delete: 
+ *     description: Create user 
+ *     parameters: 
+ *     - name: User 
+ *       description: User to create 
+ *       in: body 
+ *       schema:
+*          type: object
+*          required:
+*            - id
+*          properties:
+*            id:
+*              type: integer
+ *     responses:  
+ *       201: 
+ *         description: Created  
+ */  
+app.delete('/user', (req, res) => {
+    const { id } = req.body;
+    userLogic.delete(id).then(() =>{
+        userLogic.get().then((users) =>{
+            res.json(users);
+        });
+    });
+    
+});
+
+/** 
+ * @swagger 
+ * /user: 
+ *   get: 
+ *     description: Create user 
+ *     parameters: 
+ *     - name: id 
+ *       description: Id of user to retrieve 
+ *       in: query 
+ *       default: 0 
+ *     responses:  
+ *       201: 
+ *         description: Users  
+ */  
+app.get('/user', (req, res) => {
+    const id = req.query.id;
+    userLogic.get(id).then((users) =>{
         res.json(users);
     });
 });
+
 /** 
  * @swagger
  * /add-win: 
